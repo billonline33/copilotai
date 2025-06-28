@@ -9,6 +9,11 @@
       "id": 2,
       "title": "Sample Task 2",
       "completed": true
+    },
+    {
+      "title": "rest",
+      "completed": false,
+      "id": 3
     }
   ]
 }
