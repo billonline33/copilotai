@@ -6,13 +6,8 @@
       "completed": false
     },
     {
-      "id": 2,
-      "title": "Sample Task 2",
-      "completed": true
-    },
-    {
       "title": "rest",
-      "completed": false,
+      "completed": true,
       "id": 3
     }
   ]

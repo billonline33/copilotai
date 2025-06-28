@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import styles from "./todo-app.module.scss";
 
 interface Todo {
   id: number;
@@ -57,6 +58,34 @@ export default function Home() {
     }
   }
 
+  async function handleToggleCompleted(id: number, completed: boolean) {
+    setError(null);
+    try {
+      const res = await fetch(`http://localhost:3001/todos/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed: !completed }),
+      });
+      if (!res.ok) throw new Error("Failed to update task");
+      await fetchTodos();
+    } catch (err: unknown) {
+      setError(String(err));
+    }
+  }
+
+  async function handleDeleteTask(id: number) {
+    setError(null);
+    try {
+      const res = await fetch(`http://localhost:3001/todos/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete task");
+      await fetchTodos();
+    } catch (err: unknown) {
+      setError(String(err));
+    }
+  }
+
   const filteredTodos = todos.filter((todo) => {
     if (filter === "all") return true;
     if (filter === "completed") return todo.completed;
@@ -65,26 +94,32 @@ export default function Home() {
   });
 
   return (
-    <main>
+    <main className={styles["todo-app"]}>
       <h1>To-Do List</h1>
-      <nav style={{ marginBottom: 16 }}>
-        <button onClick={() => setFilter("all")} disabled={filter === "all"}>
+      <nav>
+        <button
+          onClick={() => setFilter("all")}
+          className={filter === "all" ? styles.active : ""}
+          disabled={filter === "all"}
+        >
           All
         </button>
         <button
           onClick={() => setFilter("uncompleted")}
+          className={filter === "uncompleted" ? styles.active : ""}
           disabled={filter === "uncompleted"}
         >
           Uncompleted
         </button>
         <button
           onClick={() => setFilter("completed")}
+          className={filter === "completed" ? styles.active : ""}
           disabled={filter === "completed"}
         >
           Completed
         </button>
       </nav>
-      <form onSubmit={handleAddTask} style={{ marginBottom: 16 }}>
+      <form onSubmit={handleAddTask}>
         <input
           type="text"
           value={newTask}
@@ -101,8 +136,15 @@ export default function Home() {
       <ul>
         {filteredTodos.map((todo) => (
           <li key={todo.id}>
-            <input type="checkbox" checked={todo.completed} readOnly />{" "}
-            {todo.title}
+            <input
+              type="checkbox"
+              checked={todo.completed}
+              onChange={() => handleToggleCompleted(todo.id, todo.completed)}
+            />
+            <span className={todo.completed ? styles.completed : ""}>
+              {todo.title}
+            </span>
+            <button onClick={() => handleDeleteTask(todo.id)}>Delete</button>
           </li>
         ))}
       </ul>
