@@ -1,12 +1,14 @@
-[
-  {
-    "id": 1,
-    "title": "Sample Task 1",
-    "completed": false
-  },
-  {
-    "id": 2,
-    "title": "Sample Task 2",
-    "completed": true
-  }
-]
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Sample Task 1",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Sample Task 2",
+      "completed": true
+    }
+  ]
+}
