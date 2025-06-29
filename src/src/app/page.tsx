@@ -27,7 +27,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("http://localhost:3001/todos");
+      const res = await fetch("/api/todos");
       if (!res.ok) throw new Error("Failed to fetch todos");
       const data = await res.json();
       setTodos(data);
@@ -43,7 +43,7 @@ export default function Home() {
     if (!newTask.trim()) return;
     setAdding(true);
     try {
-      const res = await fetch("http://localhost:3001/todos", {
+      const res = await fetch("/api/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: newTask, completed: false }),
@@ -61,10 +61,10 @@ export default function Home() {
   async function handleToggleCompleted(id: number, completed: boolean) {
     setError(null);
     try {
-      const res = await fetch(`http://localhost:3001/todos/${id}`, {
+      const res = await fetch("/api/todos", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ completed: !completed }),
+        body: JSON.stringify({ id, completed: !completed }),
       });
       if (!res.ok) throw new Error("Failed to update task");
       await fetchTodos();
@@ -76,8 +76,10 @@ export default function Home() {
   async function handleDeleteTask(id: number) {
     setError(null);
     try {
-      const res = await fetch(`http://localhost:3001/todos/${id}`, {
+      const res = await fetch("/api/todos", {
         method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
       });
       if (!res.ok) throw new Error("Failed to delete task");
       await fetchTodos();
