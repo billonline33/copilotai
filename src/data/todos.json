@@ -3,11 +3,11 @@
     {
       "id": 1,
       "title": "Sample Task 1",
-      "completed": false
+      "completed": true
     },
     {
       "title": "rest",
-      "completed": true,
+      "completed": false,
       "id": 3
     },
     {
@@ -19,11 +19,6 @@
       "title": "Test new task",
       "completed": false,
       "id": 5
-    },
-    {
-      "title": "Sample Task 2",
-      "completed": false,
-      "id": 6
     },
     {
       "title": "Test new task",

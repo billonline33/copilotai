@@ -4,43 +4,43 @@ A list of low complexity technical tasks for the to-do list project. Check off e
 
 ## Project Setup
 
-- [ ] Initialize Next.js project with TypeScript
-- [ ] Set up SCSS support
-- [ ] Configure npm scripts
+- [x] Initialize Next.js project with TypeScript
+- [x] Set up SCSS support
+- [x] Configure npm scripts
 
 ## Basic Functionality
 
-- [ ] Create a JSON file for initial data
-- [ ] Set up `json-server` for local API
-- [ ] Connect Next.js app to `json-server` API
+- [x] Create a JSON file for initial data
+- [x] Set up `json-server` for local API
+- [x] Connect Next.js app to `json-server` API
 
 ## UI Components
 
-- [ ] Create main to-do list page
-- [ ] Add navigation for All / Uncompleted / Completed tasks
-- [ ] Implement input field and button to add new tasks
-- [ ] Display list of tasks
-- [ ] Add checkbox to mark tasks as completed
+- [x] Create main to-do list page
+- [x] Add navigation for All / Uncompleted / Completed tasks
+- [x] Implement input field and button to add new tasks
+- [x] Display list of tasks
+- [x] Add checkbox to mark tasks as completed
 
 ## Features
 
-- [ ] Implement filtering (All, Uncompleted, Completed)
-- [ ] Ensure tasks persist via `json-server`
-- [ ] Make UI responsive for mobile, tablet, desktop
+- [x] Implement filtering (All, Uncompleted, Completed)
+- [x] Ensure tasks persist via `json-server`
+- [x] Make UI responsive for mobile, tablet, desktop
 
 ## Testing
 
-- [ ] Set up Cypress for end-to-end testing
-- [ ] Write basic Cypress test: add a task
-- [ ] Write Cypress test: mark task as completed
-- [ ] Write Cypress test: filter tasks
+- [x] Set up Cypress for end-to-end testing
+- [x] Write basic Cypress test: add a task
+- [x] Write Cypress test: mark task as completed
+- [x] Write Cypress test: filter tasks
 
 ## Code Quality
 
-- [ ] Add basic ARIA accessibility to components
-- [ ] Add comments and documentation to code
+- [x] Add basic ARIA accessibility to components
+- [x] Add comments and documentation to code
 
 ## Final Steps
 
-- [ ] Write README and setup instructions
-- [ ] Review requirements and acceptance criteria
+- [x] Write README and setup instructions
+- [x] Review requirements and acceptance criteria
