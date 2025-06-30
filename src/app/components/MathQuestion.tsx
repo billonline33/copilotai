@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./MathQuestion.module.scss";
 import type { MathQuestion } from "../types/math-practice";
 import {
@@ -37,6 +37,15 @@ export default function MathQuestionComponent({
     new Array(question.missingIndices.length).fill("")
   );
   const [showBiancaCelebration, setShowBiancaCelebration] = useState(false);
+
+  // Reset state when question changes
+  useEffect(() => {
+    setUserAnswers(new Array(question.missingIndices.length).fill(null));
+    setInputValues(new Array(question.missingIndices.length).fill(""));
+    setShowFeedback(false);
+    setValidationResult(null);
+    setShowBiancaCelebration(false);
+  }, [question]);
 
   // Play celebration sound (if supported)
   const playCelebrationSound = () => {
@@ -75,8 +84,13 @@ export default function MathQuestionComponent({
   };
 
   const handleInputChange = (answerIndex: number, value: string) => {
+    // Ensure we have valid arrays and index
+    if (answerIndex < 0 || answerIndex >= question.missingIndices.length) {
+      return;
+    }
+
     const newInputValues = [...inputValues];
-    newInputValues[answerIndex] = value;
+    newInputValues[answerIndex] = value || "";
     setInputValues(newInputValues);
 
     const sanitizedValue = sanitizeNumberInput(value);
@@ -129,7 +143,7 @@ export default function MathQuestionComponent({
           <div key={`input-${index}`} className={styles.inputWrapper}>
             <input
               type="text"
-              value={inputValues[answerIndex]}
+              value={inputValues[answerIndex] || ""}
               onChange={(e) => handleInputChange(answerIndex, e.target.value)}
               className={`${styles.numberInput} ${
                 showFeedback
