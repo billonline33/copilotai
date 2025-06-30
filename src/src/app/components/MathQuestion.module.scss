@@ -1,0 +1,287 @@
+// MathQuestion Component Styles
+.questionContainer {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.questionHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+}
+
+.patternInfo {
+  background: #e8f4f8;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #2c3e50;
+
+  strong {
+    color: #3498db;
+  }
+}
+
+.sequenceContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 15px;
+  min-height: 80px;
+}
+
+.numberDisplay {
+  background: #3498db;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  min-width: 60px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.numberInput {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem 1.5rem;
+  border: 3px solid #bdc3c7;
+  border-radius: 12px;
+  text-align: center;
+  min-width: 80px;
+  background: white;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+  }
+
+  &::placeholder {
+    color: #bdc3c7;
+    font-size: 2rem;
+  }
+
+  &.correct {
+    border-color: #27ae60;
+    background: #d5f4e6;
+    color: #27ae60;
+  }
+
+  &.incorrect {
+    border-color: #e74c3c;
+    background: #fdf2f2;
+    color: #e74c3c;
+  }
+}
+
+.arrow {
+  font-size: 1.5rem;
+  color: #7f8c8d;
+  font-weight: bold;
+}
+
+.actionButtons {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.submitButton {
+  background: linear-gradient(45deg, #27ae60, #2ecc71);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 200px;
+
+  &:hover:not(.disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+  }
+
+  &.disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.feedbackContainer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.resultHeader {
+  margin-bottom: 1.5rem;
+
+  &.success {
+    color: #27ae60;
+  }
+
+  &.partial {
+    color: #f39c12;
+  }
+
+  h4 {
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
+  }
+}
+
+.celebration {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  h4 {
+    color: #27ae60;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+}
+
+.celebrationIcon {
+  font-size: 2rem;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.scoreDisplay {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #e8f4f8;
+  border-radius: 10px;
+
+  strong {
+    color: #3498db;
+  }
+}
+
+.correctAnswers {
+  background: #fff3cd;
+  border: 2px solid #ffc107;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+
+  h5 {
+    color: #856404;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+.answersList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.correctAnswer {
+  background: white;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+
+  strong {
+    color: #856404;
+  }
+}
+
+.nextButton {
+  background: linear-gradient(45deg, #e74c3c, #f39c12);
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .questionContainer {
+    padding: 1.5rem;
+  }
+
+  .sequenceContainer {
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .numberDisplay,
+  .numberInput {
+    font-size: 1.2rem;
+    padding: 0.8rem 1rem;
+    min-width: 50px;
+  }
+
+  .arrow {
+    font-size: 1.2rem;
+  }
+
+  .submitButton,
+  .nextButton {
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    min-width: 180px;
+  }
+}
+
+// Touch-friendly targets
+@media (hover: none) and (pointer: coarse) {
+  .numberInput {
+    min-height: 44px;
+    font-size: 16px; // Prevents zoom on iOS
+  }
+
+  .submitButton,
+  .nextButton {
+    min-height: 44px;
+    padding: 1rem 2rem;
+  }
+}
