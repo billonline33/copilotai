@@ -142,6 +142,7 @@ export default function MathQuestionComponent({
               placeholder="?"
               disabled={showFeedback}
               aria-label={`Missing number ${answerIndex + 1}`}
+              data-testid={`answer-input-${answerIndex}`}
             />
           </div>
         );
@@ -167,7 +168,7 @@ export default function MathQuestionComponent({
   };
 
   return (
-    <div className={styles.questionContainer}>
+    <div className={styles.questionContainer} data-testid="question-container">
       <div className={styles.questionHeader}>
         <h3>{getQuestionDescription(question)}</h3>
         <div className={styles.patternInfo}>
@@ -176,7 +177,12 @@ export default function MathQuestionComponent({
         </div>
       </div>
 
-      <div className={styles.sequenceContainer}>{renderSequence()}</div>
+      <div
+        className={styles.sequenceContainer}
+        data-testid="sequence-container"
+      >
+        {renderSequence()}
+      </div>
 
       {!showFeedback && (
         <div className={styles.actionButtons}>
@@ -186,6 +192,7 @@ export default function MathQuestionComponent({
             className={`${styles.submitButton} ${
               !isAnswerComplete ? styles.disabled : ""
             }`}
+            data-testid="submit-answer-button"
           >
             Check My Answer! 🎯
           </button>
@@ -193,11 +200,15 @@ export default function MathQuestionComponent({
       )}
 
       {showFeedback && validationResult && (
-        <div className={styles.feedbackContainer}>
+        <div
+          className={styles.feedbackContainer}
+          data-testid="feedback-container"
+        >
           <div
             className={`${styles.resultHeader} ${
               validationResult.isCorrect ? styles.success : styles.partial
             }`}
+            data-testid="result-header"
           >
             {validationResult.isCorrect ? (
               <div className={styles.celebration}>
@@ -210,13 +221,16 @@ export default function MathQuestionComponent({
             )}
           </div>
 
-          <div className={styles.scoreDisplay}>
+          <div className={styles.scoreDisplay} data-testid="score-display">
             You got <strong>{validationResult.correctCount}</strong> out of{" "}
             <strong>{validationResult.totalCount}</strong> correct!
           </div>
 
           {!validationResult.isCorrect && (
-            <div className={styles.correctAnswers}>
+            <div
+              className={styles.correctAnswers}
+              data-testid="correct-answers"
+            >
               <h5>The correct answers are:</h5>
               <div className={styles.answersList}>
                 {question.correctAnswers.map((answer, index) => (
@@ -228,7 +242,11 @@ export default function MathQuestionComponent({
             </div>
           )}
 
-          <button onClick={handleNextQuestion} className={styles.nextButton}>
+          <button
+            onClick={handleNextQuestion}
+            className={styles.nextButton}
+            data-testid="next-question-button"
+          >
             Try Another Question! 🚀
           </button>
         </div>

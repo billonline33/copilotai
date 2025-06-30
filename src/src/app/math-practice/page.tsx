@@ -29,11 +29,24 @@ export default function MathPracticePage() {
     correctAnswers: 0,
     totalPoints: 0,
   });
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSettingChange = (
     key: keyof MathPracticeSettings,
     value: string | number
   ) => {
+    // Clear any previous error when user makes changes
+    setErrorMessage("");
+
+    // Validate start number
+    if (key === "startNumber" && typeof value === "string") {
+      const num = parseInt(value);
+      if (value !== "" && (isNaN(num) || num < 0 || num > 1000)) {
+        setErrorMessage("Please enter a number between 0 and 1000");
+        return;
+      }
+    }
+
     setSettings((prev) => ({
       ...prev,
       [key]: value,
@@ -41,24 +54,38 @@ export default function MathPracticePage() {
   };
 
   const generateNewQuestion = () => {
-    const questionTypes: QuestionType[] = [
-      "fill-blank",
-      "sequence",
-      "next-prev",
-    ];
-    const randomType =
-      questionTypes[Math.floor(Math.random() * questionTypes.length)];
+    try {
+      const questionTypes: QuestionType[] = [
+        "fill-blank",
+        "sequence",
+        "next-prev",
+      ];
+      const randomType =
+        questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
-    const startNum = parseInt(settings.startNumber) || 0;
+      const startNum = parseInt(settings.startNumber) || 0;
 
-    const question = createMathQuestion({
-      pattern: settings.pattern,
-      direction: settings.direction,
-      startNumber: startNum,
-      questionType: randomType,
-    });
+      // Validate that we can generate a valid question
+      if (startNum < 0 || startNum > 1000) {
+        setErrorMessage("Starting number must be between 0 and 1000");
+        return;
+      }
 
-    setCurrentQuestion(question);
+      const question = createMathQuestion({
+        pattern: settings.pattern,
+        direction: settings.direction,
+        startNumber: startNum,
+        questionType: randomType,
+      });
+
+      setCurrentQuestion(question);
+      setErrorMessage(""); // Clear any previous errors
+    } catch (error) {
+      console.error("Error generating question:", error);
+      setErrorMessage(
+        "Oops! Something went wrong. Please try different settings."
+      );
+    }
   };
 
   const handleStartPractice = () => {
@@ -124,6 +151,9 @@ export default function MathPracticePage() {
               <div id="pattern-help" className={styles.srOnly}>
                 Choose which counting pattern you want to practice
               </div>
+              <div className={styles.helpText}>
+                Start with 10s - they&apos;re the easiest! 🌟
+              </div>
             </div>
 
             <div className={styles.settingGroup}>
@@ -136,12 +166,16 @@ export default function MathPracticePage() {
                 }
                 className={styles.select}
                 aria-describedby="direction-help"
+                title="Choose to count up (forward) or down (backward)"
               >
                 <option value="forward">Forward (going up)</option>
                 <option value="backward">Backward (going down)</option>
               </select>
               <div id="direction-help" className={styles.srOnly}>
                 Choose whether to count up or down
+              </div>
+              <div className={styles.helpText}>
+                Try forward first, then challenge yourself with backward! 🔄
               </div>
             </div>
 
@@ -154,16 +188,28 @@ export default function MathPracticePage() {
                 onChange={(e) =>
                   handleSettingChange("startNumber", e.target.value)
                 }
-                className={styles.numberInput}
+                className={`${styles.numberInput} ${
+                  errorMessage ? styles.error : ""
+                }`}
                 placeholder="e.g., 67"
                 min="0"
                 max="1000"
                 aria-describedby="start-help"
+                title="Enter a number between 0 and 1000"
               />
               <div id="start-help" className={styles.srOnly}>
                 Enter the number you want to start counting from
               </div>
+              <div className={styles.helpText}>
+                Try 0, 10, or 20 for easier practice! 🎯
+              </div>
             </div>
+
+            {errorMessage && (
+              <div className={styles.errorMessage} role="alert">
+                ⚠️ {errorMessage}
+              </div>
+            )}
 
             <button
               onClick={handleStartPractice}
