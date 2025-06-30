@@ -47,7 +47,7 @@ const ACHIEVEMENTS: Achievement[] = [
     type: "correct",
   },
   {
-    id: "twenty_correct", 
+    id: "twenty_correct",
     title: "Double Video Time! 🌟",
     description: "20 correct answers! Another video for you!",
     icon: "�",
@@ -146,7 +146,11 @@ export default function RewardSystem({
           );
 
           // Trigger video reward for specific achievements
-          if ((achievement.id === "ten_correct" || achievement.id === "twenty_correct") && onVideoReward) {
+          if (
+            (achievement.id === "ten_correct" ||
+              achievement.id === "twenty_correct") &&
+            onVideoReward
+          ) {
             onVideoReward();
           }
 

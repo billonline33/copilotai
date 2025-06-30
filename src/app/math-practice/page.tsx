@@ -308,12 +308,9 @@ export default function MathPracticePage() {
           )}
         </div>
       )}
-      
+
       {/* Video Reward Modal */}
-      <VideoReward 
-        isOpen={showVideoReward}
-        onClose={handleCloseVideoReward}
-      />
+      <VideoReward isOpen={showVideoReward} onClose={handleCloseVideoReward} />
     </div>
   );
 }

@@ -17,7 +17,7 @@ const KIDS_VIDEOS = [
     description: "Learn counting from 1 to 20 with a catchy song!",
   },
   {
-    id: "shapes-song", 
+    id: "shapes-song",
     title: "Learn Shapes Song",
     embedId: "3yKVaEaC3Z8",
     description: "Fun song about different shapes!",
@@ -25,12 +25,12 @@ const KIDS_VIDEOS = [
   {
     id: "addition-song",
     title: "Addition Song",
-    embedId: "Kzem0QKJYaQ", 
+    embedId: "Kzem0QKJYaQ",
     description: "Learn addition with a fun song!",
   },
   {
     id: "subtraction-song",
-    title: "Subtraction Song", 
+    title: "Subtraction Song",
     embedId: "m_BF5KfqLFo",
     description: "Practice subtraction with music!",
   },
@@ -50,7 +50,8 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
   useEffect(() => {
     if (isOpen) {
       // Select a random video
-      const randomVideo = KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
+      const randomVideo =
+        KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
       setSelectedVideo(randomVideo);
       setWatchTime(0);
     }
@@ -60,7 +61,7 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
     let timer: NodeJS.Timeout;
     if (isOpen && watchTime < maxWatchTime) {
       timer = setTimeout(() => {
-        setWatchTime(prev => prev + 1);
+        setWatchTime((prev) => prev + 1);
       }, 1000);
     }
     return () => clearTimeout(timer);
@@ -69,7 +70,7 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleClose = () => {
@@ -89,7 +90,7 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
             ✕
           </button>
         </div>
-        
+
         <div className={styles.videoContainer}>
           <div className={styles.videoWrapper}>
             <iframe
@@ -109,20 +110,23 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
 
         <div className={styles.controls}>
           <div className={styles.timer}>
-            <span>Watch time: {formatTime(watchTime)} / {formatTime(maxWatchTime)}</span>
+            <span>
+              Watch time: {formatTime(watchTime)} / {formatTime(maxWatchTime)}
+            </span>
             <div className={styles.progressBar}>
-              <div 
-                className={styles.progress} 
+              <div
+                className={styles.progress}
                 style={{ width: `${(watchTime / maxWatchTime) * 100}%` }}
               />
             </div>
           </div>
-          
+
           <div className={styles.buttons}>
-            <button 
+            <button
               className={styles.newVideoButton}
               onClick={() => {
-                const randomVideo = KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
+                const randomVideo =
+                  KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
                 setSelectedVideo(randomVideo);
                 setWatchTime(0);
               }}
