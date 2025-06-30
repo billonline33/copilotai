@@ -19,7 +19,7 @@ export function generateSequence(
   pattern: number,
   direction: CountingDirection,
   startNumber: number,
-  length: number = 8
+  length: number = 12 // Increased default length for more numbers
 ): number[] {
   const sequence: number[] = [];
   let current = startNumber;
@@ -41,6 +41,9 @@ export function generateSequence(
  * @param sequenceLength - Total length of the sequence
  * @param questionType - Type of question to generate
  * @returns Array of indices where numbers should be missing
+ *
+ * Note: Index 0 (first position) is never included in missing indices
+ * to ensure the sequence always starts with a visible number
  */
 export function generateMissingIndices(
   sequenceLength: number,
@@ -50,17 +53,11 @@ export function generateMissingIndices(
 
   switch (questionType) {
     case "fill-blank":
-      // Single missing number - avoid first and last positions for easier understanding
-      const randomIndex = Math.floor(Math.random() * (sequenceLength - 2)) + 1;
-      indices.push(randomIndex);
-      break;
-
-    case "sequence":
-      // Multiple missing numbers - 2-3 gaps
-      const numGaps = Math.random() > 0.5 ? 2 : 3;
+      // 2-4 missing numbers, never include first position (index 0)
+      const numGaps = Math.floor(Math.random() * 3) + 2; // 2-4 gaps
       const availableIndices = Array.from(
-        { length: sequenceLength - 2 },
-        (_, i) => i + 1
+        { length: sequenceLength - 1 }, // Exclude first position
+        (_, i) => i + 1 // Start from index 1
       );
 
       for (let i = 0; i < numGaps && availableIndices.length > 0; i++) {
@@ -71,13 +68,44 @@ export function generateMissingIndices(
       indices.sort((a, b) => a - b);
       break;
 
-    case "next-prev":
-      // Missing the next or previous number
-      if (Math.random() > 0.5) {
-        indices.push(sequenceLength - 1); // Next number
-      } else {
-        indices.push(1); // Previous number (avoid index 0)
+    case "sequence":
+      // 2-4 missing numbers, avoid first position
+      const numSequenceGaps = Math.floor(Math.random() * 3) + 2; // 2-4 gaps
+      const sequenceAvailableIndices = Array.from(
+        { length: sequenceLength - 2 }, // Exclude first and last positions
+        (_, i) => i + 1 // Start from index 1
+      );
+
+      for (
+        let i = 0;
+        i < numSequenceGaps && sequenceAvailableIndices.length > 0;
+        i++
+      ) {
+        const randomIdx = Math.floor(
+          Math.random() * sequenceAvailableIndices.length
+        );
+        indices.push(sequenceAvailableIndices[randomIdx]);
+        sequenceAvailableIndices.splice(randomIdx, 1);
       }
+      indices.sort((a, b) => a - b);
+      break;
+
+    case "next-prev":
+      // 2-4 missing numbers, avoid first position
+      const numPrevGaps = Math.floor(Math.random() * 3) + 2; // 2-4 gaps
+      const prevAvailableIndices = Array.from(
+        { length: sequenceLength - 1 }, // Exclude first position
+        (_, i) => i + 1 // Start from index 1
+      );
+
+      for (let i = 0; i < numPrevGaps && prevAvailableIndices.length > 0; i++) {
+        const randomIdx = Math.floor(
+          Math.random() * prevAvailableIndices.length
+        );
+        indices.push(prevAvailableIndices[randomIdx]);
+        prevAvailableIndices.splice(randomIdx, 1);
+      }
+      indices.sort((a, b) => a - b);
       break;
   }
 
@@ -92,8 +120,8 @@ export function generateMissingIndices(
 export function createMathQuestion(config: QuestionConfig): MathQuestion {
   const { pattern, direction, startNumber, questionType } = config;
 
-  // Generate the complete sequence
-  const fullSequence = generateSequence(pattern, direction, startNumber, 8);
+  // Generate the complete sequence with more numbers
+  const fullSequence = generateSequence(pattern, direction, startNumber, 12);
 
   // Determine which numbers will be missing
   const missingIndices = generateMissingIndices(

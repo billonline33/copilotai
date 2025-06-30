@@ -24,11 +24,14 @@ export default function MathPracticePage() {
   const [currentQuestion, setCurrentQuestion] = useState<MathQuestion | null>(
     null
   );
+  const [allQuestions, setAllQuestions] = useState<MathQuestion[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [sessionStats, setSessionStats] = useState({
     questionsAnswered: 0,
     correctAnswers: 0,
     totalPoints: 0,
+    totalQuestions: 24, // Total questions in a session
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [showVideoReward, setShowVideoReward] = useState(false);
@@ -57,39 +60,56 @@ export default function MathPracticePage() {
     }));
   };
 
-  const generateNewQuestion = () => {
+  const generateAllQuestions = () => {
     try {
+      const questions: MathQuestion[] = [];
       const questionTypes: QuestionType[] = [
         "fill-blank",
         "sequence",
         "next-prev",
       ];
-      const randomType =
-        questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
       const startNum = parseInt(settings.startNumber) || 0;
 
-      // Validate that we can generate a valid question
+      // Validate that we can generate valid questions
       if (startNum < 0 || startNum > 1000) {
         setErrorMessage("Starting number must be between 0 and 1000");
         return;
       }
 
-      const question = createMathQuestion({
-        pattern: settings.pattern,
-        direction: settings.direction,
-        startNumber: startNum,
-        questionType: randomType,
-      });
+      // Generate 24 questions
+      for (let i = 0; i < 24; i++) {
+        const randomType =
+          questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
-      setCurrentQuestion(question);
+        // Vary the starting number slightly for each question
+        const questionStartNum = startNum + i * settings.pattern;
+
+        const question = createMathQuestion({
+          pattern: settings.pattern,
+          direction: settings.direction,
+          startNumber: questionStartNum,
+          questionType: randomType,
+        });
+
+        questions.push(question);
+      }
+
+      setAllQuestions(questions);
+      setCurrentQuestionIndex(0);
+      setCurrentQuestion(questions[0]);
       setErrorMessage(""); // Clear any previous errors
     } catch (error) {
-      console.error("Error generating question:", error);
+      console.error("Error generating questions:", error);
       setErrorMessage(
         "Oops! Something went wrong. Please try different settings."
       );
     }
+  };
+
+  const generateNewQuestion = () => {
+    // Legacy function - now just moves to next question
+    handleNextQuestion();
   };
 
   const handleStartPractice = () => {
@@ -98,6 +118,7 @@ export default function MathPracticePage() {
       questionsAnswered: 0,
       correctAnswers: 0,
       totalPoints: 0,
+      totalQuestions: 24,
     });
 
     // Clear session achievements for a fresh start
@@ -108,7 +129,8 @@ export default function MathPracticePage() {
       setClearSessionAchievements(false);
     }, 100);
 
-    generateNewQuestion();
+    // Generate all 24 questions at the start
+    generateAllQuestions();
   };
 
   const handleAnswerSubmit = (isCorrect: boolean, correctCount: number) => {
@@ -119,6 +141,7 @@ export default function MathPracticePage() {
         questionsAnswered: prev.questionsAnswered + 1,
         correctAnswers: prev.correctAnswers + correctCount,
         totalPoints: prev.totalPoints + points,
+        totalQuestions: prev.totalQuestions, // Keep the total questions
       };
 
       // Debug logging
@@ -130,7 +153,17 @@ export default function MathPracticePage() {
   };
 
   const handleNextQuestion = () => {
-    generateNewQuestion();
+    const nextIndex = currentQuestionIndex + 1;
+
+    if (nextIndex < allQuestions.length) {
+      setCurrentQuestionIndex(nextIndex);
+      setCurrentQuestion(allQuestions[nextIndex]);
+    } else {
+      // End of session - show completion message
+      console.log("Session completed! All 24 questions answered.");
+      setCurrentQuestion(null);
+      // Could add a completion modal or redirect here
+    }
   };
 
   const handleBackToSettings = () => {
@@ -252,12 +285,14 @@ export default function MathPracticePage() {
               aria-label="Current session statistics"
             >
               <div className={styles.stat}>
-                <span className={styles.statLabel}>Questions:</span>
+                <span className={styles.statLabel}>Progress:</span>
                 <span
                   className={styles.statValue}
-                  aria-label={`${sessionStats.questionsAnswered} questions answered`}
+                  aria-label={`Question ${currentQuestionIndex + 1} of ${
+                    sessionStats.totalQuestions
+                  }`}
                 >
-                  {sessionStats.questionsAnswered}
+                  {currentQuestionIndex + 1}/{sessionStats.totalQuestions}
                 </span>
               </div>
               <div className={styles.stat}>
@@ -305,6 +340,25 @@ export default function MathPracticePage() {
             onVideoReward={handleVideoReward}
             clearSessionAchievements={clearSessionAchievements}
           />
+
+          {/* Progress bar for question completion */}
+          <div className={styles.progressContainer}>
+            <div className={styles.progressBar}>
+              <div
+                className={styles.progressFill}
+                style={{
+                  width: `${
+                    ((currentQuestionIndex + 1) / sessionStats.totalQuestions) *
+                    100
+                  }%`,
+                }}
+              />
+            </div>
+            <span className={styles.progressText}>
+              Question {currentQuestionIndex + 1} of{" "}
+              {sessionStats.totalQuestions}
+            </span>
+          </div>
         </div>
       )}
 
