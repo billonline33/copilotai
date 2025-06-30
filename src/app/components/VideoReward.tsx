@@ -8,44 +8,51 @@ interface VideoRewardProps {
   onClose: () => void;
 }
 
-// Fun, educational videos suitable for 7-year-olds
+// Fun, entertaining videos suitable for 7-year-olds (short and fun!)
 const KIDS_VIDEOS = [
   {
-    id: "counting-song",
-    title: "Number Song 1-20 for Children",
-    embedId: "D0Ajq682yrA", // YouTube video ID
-    description: "Learn counting from 1 to 20 with a catchy song!",
+    id: "baby-shark",
+    title: "Baby Shark Dance",
+    embedId: "XqZsoesa55w", // Pinkfong - Baby Shark (very popular with kids)
+    description: "Dance along with Baby Shark!",
   },
   {
-    id: "shapes-song",
-    title: "Learn Shapes Song",
-    embedId: "3yKVaEaC3Z8",
-    description: "Fun song about different shapes!",
+    id: "wheels-on-bus",
+    title: "The Wheels on the Bus",
+    embedId: "e_04ZrNroTo", // Super Simple Songs - fun animation
+    description: "Sing along with the wheels on the bus!",
   },
   {
-    id: "addition-song",
-    title: "Addition Song",
-    embedId: "Kzem0QKJYaQ",
-    description: "Learn addition with a fun song!",
+    id: "if-youre-happy",
+    title: "If You're Happy and You Know It",
+    embedId: "l4WNrvVjiTw", // Super Simple Songs - interactive song
+    description: "Clap your hands and stomp your feet!",
   },
   {
-    id: "subtraction-song",
-    title: "Subtraction Song",
-    embedId: "m_BF5KfqLFo",
-    description: "Practice subtraction with music!",
+    id: "head-shoulders",
+    title: "Head Shoulders Knees and Toes",
+    embedId: "h4eueDYPTIg", // Super Simple Songs - movement song
+    description: "Move your body with this fun song!",
   },
   {
-    id: "times-tables",
-    title: "Times Tables Song",
-    embedId: "StpWkdD1Qr4",
-    description: "Fun way to learn multiplication!",
+    id: "old-macdonald",
+    title: "Old MacDonald Had a Farm",
+    embedId: "_6HzoUcx3eo", // Super Simple Songs - animal sounds
+    description: "Learn about farm animals and their sounds!",
+  },
+  {
+    id: "bingo-song",
+    title: "BINGO Dog Song",
+    embedId: "9mmF8zOlh_g", // Super Simple Songs - spelling fun
+    description: "Spell BINGO with this catchy tune!",
   },
 ];
 
 export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
   const [selectedVideo, setSelectedVideo] = useState(KIDS_VIDEOS[0]);
   const [watchTime, setWatchTime] = useState(0);
-  const maxWatchTime = 180; // 3 minutes limit
+  const [videoError, setVideoError] = useState(false);
+  const maxWatchTime = 120; // 2 minutes limit for fun videos
 
   useEffect(() => {
     if (isOpen) {
@@ -54,6 +61,7 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
         KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
       setSelectedVideo(randomVideo);
       setWatchTime(0);
+      setVideoError(false); // Reset error state
     }
   }, [isOpen]);
 
@@ -84,8 +92,8 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
     <div className={styles.overlay} onClick={handleClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2>🎉 Great Job, Bianca! 🎉</h2>
-          <p>You got 10 correct answers! Enjoy your video reward!</p>
+          <h2>🎉 Amazing Work, Bianca! 🎉</h2>
+          <p>You got 10 correct answers! Time for a fun video break!</p>
           <button className={styles.closeButton} onClick={handleClose}>
             ✕
           </button>
@@ -93,14 +101,34 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
 
         <div className={styles.videoContainer}>
           <div className={styles.videoWrapper}>
-            <iframe
-              src={`https://www.youtube.com/embed/${selectedVideo.embedId}?autoplay=1&rel=0&modestbranding=1`}
-              title={selectedVideo.title}
-              frameBorder="0"
-              allow="autoplay; encrypted-media"
-              allowFullScreen
-              className={styles.video}
-            />
+            {!videoError ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${selectedVideo.embedId}?autoplay=1&rel=0&modestbranding=1&controls=1&showinfo=0&fs=1&iv_load_policy=3`}
+                title={selectedVideo.title}
+                frameBorder="0"
+                allow="autoplay; encrypted-media; fullscreen"
+                allowFullScreen
+                className={styles.video}
+                onError={() => setVideoError(true)}
+              />
+            ) : (
+              <div className={styles.videoError}>
+                <div className={styles.errorIcon}>📺</div>
+                <h3>Oops! Video not available</h3>
+                <p>
+                  Some videos can't be played in our app, but you've still
+                  earned your reward!
+                </p>
+                <a
+                  href={`https://www.youtube.com/watch?v=${selectedVideo.embedId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.watchOnYouTube}
+                >
+                  🔗 Watch on YouTube
+                </a>
+              </div>
+            )}
           </div>
           <div className={styles.videoInfo}>
             <h3>{selectedVideo.title}</h3>
@@ -129,6 +157,7 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
                   KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
                 setSelectedVideo(randomVideo);
                 setWatchTime(0);
+                setVideoError(false); // Reset error state
               }}
             >
               🎲 Random Video

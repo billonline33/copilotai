@@ -10,6 +10,7 @@ interface RewardSystemProps {
   questionsAnswered: number;
   onCelebration?: () => void;
   onVideoReward?: () => void;
+  clearSessionAchievements?: boolean; // New prop to clear session achievements
 }
 
 interface Achievement {
@@ -86,6 +87,7 @@ export default function RewardSystem({
   questionsAnswered,
   onCelebration,
   onVideoReward,
+  clearSessionAchievements,
 }: RewardSystemProps) {
   const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>(
     []
@@ -107,8 +109,42 @@ export default function RewardSystem({
     }
   }, []);
 
+  // Clear session-specific achievements when starting a new session
+  useEffect(() => {
+    if (clearSessionAchievements) {
+      console.log("🔄 Clearing session achievements for new practice session");
+      const saved = localStorage.getItem("bianca-achievements");
+      if (saved) {
+        try {
+          const currentAchievements = JSON.parse(saved);
+          // Remove session-specific achievements (correct answer based)
+          const sessionAchievements = ["ten_correct", "twenty_correct"];
+          const filteredAchievements = currentAchievements.filter(
+            (id: string) => !sessionAchievements.includes(id)
+          );
+
+          // Update localStorage and state
+          localStorage.setItem(
+            "bianca-achievements",
+            JSON.stringify(filteredAchievements)
+          );
+          setUnlockedAchievements(filteredAchievements);
+          console.log("🔄 Cleared achievements:", sessionAchievements);
+        } catch (error) {
+          console.error("Error clearing session achievements:", error);
+        }
+      }
+    }
+  }, [clearSessionAchievements]);
+
   // Check for new achievements
   useEffect(() => {
+    console.log("RewardSystem - checking achievements with:", {
+      points,
+      correctAnswers,
+      questionsAnswered,
+    });
+
     const checkAchievements = () => {
       for (const achievement of ACHIEVEMENTS) {
         if (unlockedAchievements.includes(achievement.id)) continue;
@@ -123,6 +159,9 @@ export default function RewardSystem({
             break;
           case "correct":
             shouldUnlock = correctAnswers >= achievement.threshold;
+            console.log(
+              `Checking ${achievement.id}: correctAnswers=${correctAnswers} >= threshold=${achievement.threshold} = ${shouldUnlock}`
+            );
             break;
           case "accuracy":
             const accuracy =
@@ -134,6 +173,7 @@ export default function RewardSystem({
         }
 
         if (shouldUnlock) {
+          console.log(`🎉 Achievement unlocked: ${achievement.id}`);
           const newUnlocked = [...unlockedAchievements, achievement.id];
           setUnlockedAchievements(newUnlocked);
           setNewAchievement(achievement);
@@ -151,6 +191,7 @@ export default function RewardSystem({
               achievement.id === "twenty_correct") &&
             onVideoReward
           ) {
+            console.log("🎬 Triggering video reward for:", achievement.id);
             onVideoReward();
           }
 

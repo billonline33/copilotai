@@ -32,6 +32,8 @@ export default function MathPracticePage() {
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [showVideoReward, setShowVideoReward] = useState(false);
+  const [clearSessionAchievements, setClearSessionAchievements] =
+    useState(false);
 
   const handleSettingChange = (
     key: keyof MathPracticeSettings,
@@ -97,17 +99,34 @@ export default function MathPracticePage() {
       correctAnswers: 0,
       totalPoints: 0,
     });
+
+    // Clear session achievements for a fresh start
+    setClearSessionAchievements(true);
+
+    // Reset the clear flag after a brief moment
+    setTimeout(() => {
+      setClearSessionAchievements(false);
+    }, 100);
+
     generateNewQuestion();
   };
 
   const handleAnswerSubmit = (isCorrect: boolean, correctCount: number) => {
     const points = correctCount * 10; // 10 points per correct answer
 
-    setSessionStats((prev) => ({
-      questionsAnswered: prev.questionsAnswered + 1,
-      correctAnswers: prev.correctAnswers + correctCount,
-      totalPoints: prev.totalPoints + points,
-    }));
+    setSessionStats((prev) => {
+      const newStats = {
+        questionsAnswered: prev.questionsAnswered + 1,
+        correctAnswers: prev.correctAnswers + correctCount,
+        totalPoints: prev.totalPoints + points,
+      };
+
+      // Debug logging
+      console.log("Answer submitted:", { isCorrect, correctCount });
+      console.log("New session stats:", newStats);
+
+      return newStats;
+    });
   };
 
   const handleNextQuestion = () => {
@@ -120,11 +139,38 @@ export default function MathPracticePage() {
   };
 
   const handleVideoReward = () => {
+    console.log("🎬 handleVideoReward called - opening video modal");
     setShowVideoReward(true);
   };
 
   const handleCloseVideoReward = () => {
+    console.log("🎬 handleCloseVideoReward called - closing video modal");
     setShowVideoReward(false);
+  };
+
+  // For testing - manually trigger video reward
+  const handleTestVideoReward = () => {
+    console.log("🧪 Test button clicked - opening video modal directly");
+    setShowVideoReward(true);
+  };
+
+  // For testing - manually set 10 correct answers
+  const handleTest10Correct = () => {
+    console.log("🧪 Setting 10 correct answers for testing");
+    setSessionStats((prev) => ({
+      ...prev,
+      correctAnswers: 10,
+    }));
+  };
+
+  // For testing - manually clear all achievements
+  const handleClearAchievements = () => {
+    console.log("🧪 Clearing all achievements for testing");
+    localStorage.removeItem("bianca-achievements");
+    setClearSessionAchievements(true);
+    setTimeout(() => {
+      setClearSessionAchievements(false);
+    }, 100);
   };
 
   return (
@@ -297,7 +343,59 @@ export default function MathPracticePage() {
             correctAnswers={sessionStats.correctAnswers}
             questionsAnswered={sessionStats.questionsAnswered}
             onVideoReward={handleVideoReward}
+            clearSessionAchievements={clearSessionAchievements}
           />
+
+          {/* Test buttons for video reward (development only) */}
+          {process.env.NODE_ENV === "development" && (
+            <div style={{ margin: "10px 0", textAlign: "center" }}>
+              <button
+                onClick={handleTestVideoReward}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#ff6b6b",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  margin: "0 5px",
+                }}
+              >
+                🎬 Test Video Modal
+              </button>
+              <button
+                onClick={handleTest10Correct}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#4ecdc4",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  margin: "0 5px",
+                }}
+              >
+                🎯 Set 10 Correct
+              </button>
+              <button
+                onClick={handleClearAchievements}
+                style={{
+                  padding: "8px 16px",
+                  backgroundColor: "#ffa500",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontSize: "14px",
+                  margin: "0 5px",
+                }}
+              >
+                🧹 Clear Achievements
+              </button>
+            </div>
+          )}
 
           {currentQuestion && (
             <MathQuestionComponent
