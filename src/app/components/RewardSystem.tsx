@@ -9,6 +9,7 @@ interface RewardSystemProps {
   correctAnswers: number;
   questionsAnswered: number;
   onCelebration?: () => void;
+  onVideoReward?: () => void;
 }
 
 interface Achievement {
@@ -17,7 +18,7 @@ interface Achievement {
   description: string;
   icon: string;
   threshold: number;
-  type: "points" | "questions" | "accuracy";
+  type: "points" | "questions" | "accuracy" | "correct";
 }
 
 const ACHIEVEMENTS: Achievement[] = [
@@ -38,12 +39,20 @@ const ACHIEVEMENTS: Achievement[] = [
     type: "questions",
   },
   {
-    id: "ten_questions",
-    title: "Math Explorer",
-    description: "Answer 10 questions",
-    icon: "🏆",
+    id: "ten_correct",
+    title: "Video Time! 🎬",
+    description: "10 correct answers! Enjoy your video reward!",
+    icon: "🎬",
     threshold: 10,
-    type: "questions",
+    type: "correct",
+  },
+  {
+    id: "twenty_correct", 
+    title: "Double Video Time! 🌟",
+    description: "20 correct answers! Another video for you!",
+    icon: "�",
+    threshold: 20,
+    type: "correct",
   },
   {
     id: "first_points",
@@ -76,6 +85,7 @@ export default function RewardSystem({
   correctAnswers,
   questionsAnswered,
   onCelebration,
+  onVideoReward,
 }: RewardSystemProps) {
   const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>(
     []
@@ -111,6 +121,9 @@ export default function RewardSystem({
           case "questions":
             shouldUnlock = questionsAnswered >= achievement.threshold;
             break;
+          case "correct":
+            shouldUnlock = correctAnswers >= achievement.threshold;
+            break;
           case "accuracy":
             const accuracy =
               questionsAnswered > 0
@@ -132,16 +145,22 @@ export default function RewardSystem({
             JSON.stringify(newUnlocked)
           );
 
+          // Trigger video reward for specific achievements
+          if ((achievement.id === "ten_correct" || achievement.id === "twenty_correct") && onVideoReward) {
+            onVideoReward();
+          }
+
           // Trigger celebration callback
           if (onCelebration) {
             onCelebration();
           }
 
-          // Hide celebration after 3 seconds
+          // Hide celebration after 4 seconds for video rewards, 3 seconds for others
+          const delay = achievement.type === "correct" ? 4000 : 3000;
           setTimeout(() => {
             setShowCelebration(false);
             setNewAchievement(null);
-          }, 3000);
+          }, delay);
 
           break; // Only show one achievement at a time
         }
@@ -155,6 +174,7 @@ export default function RewardSystem({
     questionsAnswered,
     unlockedAchievements,
     onCelebration,
+    onVideoReward,
   ]);
 
   const accuracy =

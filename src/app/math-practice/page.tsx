@@ -12,6 +12,7 @@ import { createMathQuestion } from "../utils/mathQuestionGenerator";
 import MathQuestionComponent from "../components/MathQuestion";
 import RewardSystem from "../components/RewardSystem";
 import ProgressTracker from "../components/ProgressTracker";
+import VideoReward from "../components/VideoReward";
 
 export default function MathPracticePage() {
   const [settings, setSettings] = useState<MathPracticeSettings>({
@@ -30,6 +31,7 @@ export default function MathPracticePage() {
     totalPoints: 0,
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [showVideoReward, setShowVideoReward] = useState(false);
 
   const handleSettingChange = (
     key: keyof MathPracticeSettings,
@@ -115,6 +117,14 @@ export default function MathPracticePage() {
   const handleBackToSettings = () => {
     setIsPlaying(false);
     setCurrentQuestion(null);
+  };
+
+  const handleVideoReward = () => {
+    setShowVideoReward(true);
+  };
+
+  const handleCloseVideoReward = () => {
+    setShowVideoReward(false);
   };
 
   return (
@@ -286,6 +296,7 @@ export default function MathPracticePage() {
             points={sessionStats.totalPoints}
             correctAnswers={sessionStats.correctAnswers}
             questionsAnswered={sessionStats.questionsAnswered}
+            onVideoReward={handleVideoReward}
           />
 
           {currentQuestion && (
@@ -297,6 +308,12 @@ export default function MathPracticePage() {
           )}
         </div>
       )}
+      
+      {/* Video Reward Modal */}
+      <VideoReward 
+        isOpen={showVideoReward}
+        onClose={handleCloseVideoReward}
+      />
     </div>
   );
 }

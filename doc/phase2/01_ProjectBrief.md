@@ -10,6 +10,7 @@
 
    - The main object for create a list of maths practice question, based on some input data.
    - and give some reward to Bianca, so she will be interested in doing it
+   - **NEW FEATURE**: After Bianca gets 10 correct answers, she will get a video reward featuring educational kids' videos to keep her motivated and engaged
 
 3. **Scope**
 
@@ -38,3 +39,9 @@
 
 8. **Success Criteria**
    - Define how project success will be measured.
+   - **Video Reward Feature**: Successfully implemented educational video rewards that trigger after 10 correct answers, featuring:
+     - Curated educational videos suitable for 7-year-olds
+     - Random video selection to maintain interest
+     - 3-minute viewing time limit with progress tracking
+     - Child-friendly interface with large, colorful buttons
+     - Safe, embedded YouTube videos with restricted settings
