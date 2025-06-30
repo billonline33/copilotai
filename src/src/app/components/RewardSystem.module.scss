@@ -1,0 +1,331 @@
+// RewardSystem Component Styles
+.rewardContainer {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.statIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.achievementsSection {
+  h3 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    text-align: center;
+  }
+}
+
+.achievementsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.achievementCard {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &.unlocked {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    border-color: #27ae60;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  &.locked {
+    opacity: 0.6;
+  }
+}
+
+.achievementIcon {
+  font-size: 2rem;
+  min-width: 50px;
+  text-align: center;
+}
+
+.achievementInfo {
+  flex: 1;
+}
+
+.achievementTitle {
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.achievementDesc {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.5rem;
+}
+
+.progressBar {
+  background: #e1e8ed;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progressFill {
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  height: 100%;
+  transition: width 0.5s ease;
+  border-radius: 3px;
+}
+
+// Celebration Animation
+.celebrationOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.celebrationCard {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 400px;
+  position: relative;
+  animation: bounceIn 0.6s ease;
+
+  h2 {
+    color: #27ae60;
+    font-size: 1.8rem;
+    margin: 1rem 0 0.5rem 0;
+  }
+
+  h3 {
+    color: #2c3e50;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #7f8c8d;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.celebrationIcon {
+  font-size: 4rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.celebrationConfetti {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #f39c12;
+  animation: confettiFall 3s linear infinite;
+
+  &:nth-child(odd) {
+    background: #e74c3c;
+    animation-duration: 2.5s;
+  }
+
+  &:nth-child(3n) {
+    background: #3498db;
+    animation-duration: 3.5s;
+  }
+
+  &:nth-child(4n) {
+    background: #2ecc71;
+    animation-duration: 2.8s;
+  }
+
+  &:nth-child(5n) {
+    background: #9b59b6;
+    animation-duration: 3.2s;
+  }
+}
+
+// Generate random positions for confetti
+@for $i from 1 through 20 {
+  .confetti:nth-child(#{$i}) {
+    left: random(100) * 1%;
+    animation-delay: random(3000) * 1ms;
+  }
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .rewardContainer {
+    padding: 1.5rem;
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+
+  .statCard {
+    padding: 1rem;
+  }
+
+  .statIcon {
+    font-size: 1.5rem;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
+
+  .achievementsGrid {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .achievementCard {
+    padding: 0.8rem;
+  }
+
+  .celebrationCard {
+    margin: 1rem;
+    padding: 2rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .celebrationIcon {
+      font-size: 3rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    gap: 0.3rem;
+  }
+
+  .statCard {
+    padding: 0.8rem;
+  }
+
+  .statIcon {
+    font-size: 1.2rem;
+  }
+
+  .statValue {
+    font-size: 1.2rem;
+  }
+
+  .statLabel {
+    font-size: 0.8rem;
+  }
+}

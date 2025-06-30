@@ -242,6 +242,198 @@
   }
 }
 
+// Special Bianca Celebration
+.biancaCelebration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, #ff9a8b, #fecfef, #b5c6e0, #a8edea);
+  background-size: 400% 400%;
+  animation: celebrationGradient 2s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+@keyframes celebrationGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.celebrationContent {
+  background: white;
+  border-radius: 30px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 400px;
+  position: relative;
+  animation: celebrationBounce 0.8s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes celebrationBounce {
+  0% {
+    transform: scale(0.3) rotate(-15deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.princessIcon {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  animation: princessFloat 2s ease-in-out infinite;
+}
+
+@keyframes princessFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+}
+
+.celebrationTitle {
+  font-size: 2.5rem;
+  color: #e91e63;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(233, 30, 99, 0.3);
+  animation: titlePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.celebrationStars {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  span {
+    font-size: 2rem;
+    animation: starTwinkle 1s ease-in-out infinite;
+
+    &:nth-child(1) {
+      animation-delay: 0s;
+    }
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    &:nth-child(4) {
+      animation-delay: 0.6s;
+    }
+    &:nth-child(5) {
+      animation-delay: 0.8s;
+    }
+  }
+}
+
+@keyframes starTwinkle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.3) rotate(180deg);
+    opacity: 0.7;
+  }
+}
+
+.celebrationMessage {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.celebrationSparkles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  border-radius: 50%;
+  animation: sparkleFall 3s linear infinite;
+
+  &:nth-child(odd) {
+    background: linear-gradient(45deg, #ff6b9d, #c44569);
+    animation-duration: 2.5s;
+  }
+
+  &:nth-child(3n) {
+    background: linear-gradient(45deg, #4834d4, #686de0);
+    animation-duration: 3.5s;
+  }
+
+  &:nth-child(4n) {
+    background: linear-gradient(45deg, #00d2d3, #54a0ff);
+    animation-duration: 2.8s;
+  }
+}
+
+// Generate random positions for sparkles
+@for $i from 1 through 15 {
+  .sparkle:nth-child(#{$i}) {
+    left: random(100) * 1%;
+    animation-delay: random(2000) * 1ms;
+  }
+}
+
+@keyframes sparkleFall {
+  0% {
+    transform: translateY(-50px) scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(50px) scale(1) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(150px) scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
 // Mobile responsiveness
 @media (max-width: 768px) {
   .questionContainer {

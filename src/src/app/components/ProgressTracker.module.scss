@@ -1,0 +1,341 @@
+// ProgressTracker Component Styles
+.progressContainer {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  h3 {
+    color: #2c3e50;
+    margin: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.toggleButton {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+  }
+}
+
+// Current Session
+.currentSession {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+
+  h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+  }
+}
+
+.sessionStats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+.sessionStat {
+  text-align: center;
+
+  .statNumber {
+    display: block;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
+
+  .statLabel {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+}
+
+// Overall Progress
+.overallProgress {
+  margin-bottom: 2rem;
+
+  h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+.progressGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.progressCard {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: #3498db;
+  }
+}
+
+.progressIcon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.progressValue {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.progressLabel {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+}
+
+// Accuracy Progress Bar
+.accuracyProgress {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.accuracyLabel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.accuracyBar {
+  background: #e1e8ed;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.accuracyFill {
+  background: linear-gradient(
+    90deg,
+    #e74c3c 0%,
+    #f39c12 25%,
+    #f1c40f 50%,
+    #2ecc71 75%,
+    #27ae60 100%
+  );
+  height: 100%;
+  transition: width 0.8s ease;
+  border-radius: 6px;
+}
+
+.accuracyMilestones {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #7f8c8d;
+
+  span {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &.reached {
+      background: #27ae60;
+      color: white;
+      font-weight: bold;
+    }
+  }
+}
+
+// History Section
+.historySection {
+  h4 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+.noHistory {
+  text-align: center;
+  color: #7f8c8d;
+  font-style: italic;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.historyList {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.historyEntry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #e1e8ed;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #f8f9fa;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.historyDate {
+  font-weight: bold;
+  color: #2c3e50;
+  min-width: 100px;
+}
+
+.historyStats {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #7f8c8d;
+
+  span {
+    white-space: nowrap;
+  }
+}
+
+// Save Section
+.saveSection {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e1e8ed;
+}
+
+.saveButton {
+  background: linear-gradient(45deg, #2ecc71, #27ae60);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(46, 204, 113, 0.3);
+  }
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .progressContainer {
+    padding: 1.5rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+
+    h3 {
+      text-align: center;
+    }
+  }
+
+  .sessionStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .sessionStat {
+    .statNumber {
+      font-size: 1.5rem;
+    }
+  }
+
+  .progressGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .progressCard {
+    padding: 1rem;
+  }
+
+  .progressIcon {
+    font-size: 1.5rem;
+  }
+
+  .progressValue {
+    font-size: 1.5rem;
+  }
+
+  .historyEntry {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .historyStats {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .sessionStats {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .progressGrid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .accuracyMilestones {
+    font-size: 0.7rem;
+
+    span {
+      padding: 0.2rem 0.3rem;
+    }
+  }
+
+  .historyStats {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+}
