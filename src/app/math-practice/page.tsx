@@ -180,6 +180,135 @@ export default function MathPracticePage() {
         <p>Let&apos;s practice counting patterns together!</p>
       </header>
 
+      {/* Test buttons for video reward (development only) - Moved to top for easy access */}
+      {process.env.NODE_ENV === "development" && (
+        <div
+          style={{
+            margin: "10px 0",
+            textAlign: "center",
+            padding: "10px",
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            borderRadius: "8px",
+          }}
+        >
+          <p style={{ margin: "0 0 10px 0", fontSize: "14px", color: "#666" }}>
+            🧪 Development Testing Tools
+          </p>
+          <button
+            onClick={handleTestVideoReward}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#ff6b6b",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "14px",
+              margin: "0 5px",
+            }}
+          >
+            🎬 Test Video Modal
+          </button>
+          <button
+            onClick={handleTest10Correct}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#4ecdc4",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "14px",
+              margin: "0 5px",
+            }}
+          >
+            🎯 Set 10 Correct
+          </button>
+          <button
+            onClick={handleClearAchievements}
+            style={{
+              padding: "8px 16px",
+              backgroundColor: "#ffa500",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "14px",
+              margin: "0 5px",
+            }}
+          >
+            🧹 Clear Achievements
+          </button>
+        </div>
+      )}
+
+      {/* Practice Session Container - Moved to top for easy access */}
+      {isPlaying && (
+        <div className={styles.practiceMode} role="main" aria-live="polite">
+          <div className={styles.practiceHeader}>
+            <div
+              className={styles.statsBar}
+              role="status"
+              aria-label="Current session statistics"
+            >
+              <div className={styles.stat}>
+                <span className={styles.statLabel}>Questions:</span>
+                <span
+                  className={styles.statValue}
+                  aria-label={`${sessionStats.questionsAnswered} questions answered`}
+                >
+                  {sessionStats.questionsAnswered}
+                </span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statLabel}>Correct:</span>
+                <span
+                  className={styles.statValue}
+                  aria-label={`${sessionStats.correctAnswers} correct answers`}
+                >
+                  {sessionStats.correctAnswers}
+                </span>
+              </div>
+              <div className={styles.stat}>
+                <span className={styles.statLabel}>Points:</span>
+                <span
+                  className={styles.statValue}
+                  aria-label={`${sessionStats.totalPoints} points earned`}
+                >
+                  {sessionStats.totalPoints}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={handleBackToSettings}
+              className={styles.backButton}
+              aria-label="Go back to practice settings"
+            >
+              ← Back to Settings
+            </button>
+          </div>
+
+          {/* Math Question Container - Now at the top! */}
+          {currentQuestion && (
+            <MathQuestionComponent
+              question={currentQuestion}
+              onAnswerSubmit={handleAnswerSubmit}
+              onNextQuestion={handleNextQuestion}
+            />
+          )}
+
+          {/* Reward System during practice */}
+          <RewardSystem
+            points={sessionStats.totalPoints}
+            correctAnswers={sessionStats.correctAnswers}
+            questionsAnswered={sessionStats.questionsAnswered}
+            onVideoReward={handleVideoReward}
+            clearSessionAchievements={clearSessionAchievements}
+          />
+        </div>
+      )}
+
+      {/* Settings Section - Now below practice when not playing */}
       {!isPlaying ? (
         <div className={styles.mainContent}>
           <section
@@ -292,120 +421,7 @@ export default function MathPracticePage() {
           {/* Progress Tracker on settings page */}
           <ProgressTracker currentSession={sessionStats} />
         </div>
-      ) : (
-        <div className={styles.practiceMode} role="main" aria-live="polite">
-          <div className={styles.practiceHeader}>
-            <div
-              className={styles.statsBar}
-              role="status"
-              aria-label="Current session statistics"
-            >
-              <div className={styles.stat}>
-                <span className={styles.statLabel}>Questions:</span>
-                <span
-                  className={styles.statValue}
-                  aria-label={`${sessionStats.questionsAnswered} questions answered`}
-                >
-                  {sessionStats.questionsAnswered}
-                </span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statLabel}>Correct:</span>
-                <span
-                  className={styles.statValue}
-                  aria-label={`${sessionStats.correctAnswers} correct answers`}
-                >
-                  {sessionStats.correctAnswers}
-                </span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statLabel}>Points:</span>
-                <span
-                  className={styles.statValue}
-                  aria-label={`${sessionStats.totalPoints} points earned`}
-                >
-                  {sessionStats.totalPoints}
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={handleBackToSettings}
-              className={styles.backButton}
-              aria-label="Go back to practice settings"
-            >
-              ← Back to Settings
-            </button>
-          </div>
-
-          {/* Reward System during practice */}
-          <RewardSystem
-            points={sessionStats.totalPoints}
-            correctAnswers={sessionStats.correctAnswers}
-            questionsAnswered={sessionStats.questionsAnswered}
-            onVideoReward={handleVideoReward}
-            clearSessionAchievements={clearSessionAchievements}
-          />
-
-          {/* Test buttons for video reward (development only) */}
-          {process.env.NODE_ENV === "development" && (
-            <div style={{ margin: "10px 0", textAlign: "center" }}>
-              <button
-                onClick={handleTestVideoReward}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#ff6b6b",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  margin: "0 5px",
-                }}
-              >
-                🎬 Test Video Modal
-              </button>
-              <button
-                onClick={handleTest10Correct}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#4ecdc4",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  margin: "0 5px",
-                }}
-              >
-                🎯 Set 10 Correct
-              </button>
-              <button
-                onClick={handleClearAchievements}
-                style={{
-                  padding: "8px 16px",
-                  backgroundColor: "#ffa500",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  margin: "0 5px",
-                }}
-              >
-                🧹 Clear Achievements
-              </button>
-            </div>
-          )}
-
-          {currentQuestion && (
-            <MathQuestionComponent
-              question={currentQuestion}
-              onAnswerSubmit={handleAnswerSubmit}
-              onNextQuestion={handleNextQuestion}
-            />
-          )}
-        </div>
-      )}
+      ) : null}
 
       {/* Video Reward Modal */}
       <VideoReward isOpen={showVideoReward} onClose={handleCloseVideoReward} />

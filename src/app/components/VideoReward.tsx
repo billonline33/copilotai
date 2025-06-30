@@ -46,6 +46,55 @@ const KIDS_VIDEOS = [
     embedId: "9mmF8zOlh_g", // Super Simple Songs - spelling fun
     description: "Spell BINGO with this catchy tune!",
   },
+  // User's custom video selections
+  {
+    id: "fun-video-1",
+    title: "Fun Video Adventure 1",
+    embedId: "DsUPVERZFlI", // User selected
+    description: "A special fun video just for you!",
+  },
+  {
+    id: "fun-video-2",
+    title: "Fun Video Adventure 2",
+    embedId: "DEWsqAmoty8", // User selected
+    description: "Another awesome video to enjoy!",
+  },
+  {
+    id: "fun-video-3",
+    title: "Fun Video Adventure 3",
+    embedId: "f6FBy3z3wqc", // User selected
+    description: "Get ready for more fun!",
+  },
+  {
+    id: "fun-video-4",
+    title: "Fun Video Adventure 4",
+    embedId: "MIWtPBIQeyQ", // User selected
+    description: "Amazing video time!",
+  },
+  {
+    id: "fun-video-5",
+    title: "Fun Video Adventure 5",
+    embedId: "DgTGDFpT-QE", // User selected
+    description: "Super fun video break!",
+  },
+  {
+    id: "fun-video-6",
+    title: "Fun Video Adventure 6",
+    embedId: "7Z4jAH1iBeQ", // User selected
+    description: "Exciting video reward!",
+  },
+  {
+    id: "fun-video-7",
+    title: "Fun Video Adventure 7",
+    embedId: "BJHm_pUE7bs", // User selected
+    description: "Wonderful video entertainment!",
+  },
+  {
+    id: "fun-video-8",
+    title: "Fun Video Adventure 8",
+    embedId: "xgG2FMEF5yU", // User selected
+    description: "Fantastic video surprise!",
+  },
 ];
 
 export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
