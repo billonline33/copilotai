@@ -24,6 +24,16 @@
       "title": "Test new task",
       "completed": false,
       "id": 7
+    },
+    {
+      "title": "Test new task",
+      "completed": false,
+      "id": 8
+    },
+    {
+      "title": "Test new task",
+      "completed": false,
+      "id": 9
     }
   ]
 }
