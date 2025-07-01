@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./MathQuestion.module.scss";
 import type { MathQuestion } from "../types/math-practice";
 import {
@@ -20,12 +20,14 @@ interface MathQuestionProps {
   question: MathQuestion;
   onAnswerSubmit: (isCorrect: boolean, correctCount: number) => void;
   onNextQuestion: () => void;
+  maxNumber: number; // NEW: max number to display
 }
 
 export default function MathQuestionComponent({
   question,
   onAnswerSubmit,
   onNextQuestion,
+  maxNumber,
 }: MathQuestionProps) {
   const [userAnswers, setUserAnswers] = useState<(number | null)[]>(
     new Array(question.missingIndices.length).fill(null)
@@ -37,6 +39,7 @@ export default function MathQuestionComponent({
     new Array(question.missingIndices.length).fill("")
   );
   const [showBiancaCelebration, setShowBiancaCelebration] = useState(false);
+  const firstInputRef = useRef<HTMLInputElement>(null);
 
   // Reset state when question changes
   useEffect(() => {
@@ -45,6 +48,10 @@ export default function MathQuestionComponent({
     setShowFeedback(false);
     setValidationResult(null);
     setShowBiancaCelebration(false);
+    // Focus the first input field when question changes
+    setTimeout(() => {
+      firstInputRef.current?.focus();
+    }, 0);
   }, [question]);
 
   // Play celebration sound (if supported)
@@ -134,7 +141,6 @@ export default function MathQuestionComponent({
 
     question.sequence.forEach((num, index) => {
       const isMissing = question.missingIndices.includes(index);
-
       if (isMissing) {
         const answerIndex = missingIndexCounter;
         missingIndexCounter++;
@@ -142,6 +148,7 @@ export default function MathQuestionComponent({
         displayItems.push(
           <div key={`input-${index}`} className={styles.inputWrapper}>
             <input
+              ref={answerIndex === 0 ? firstInputRef : undefined}
               type="text"
               value={inputValues[answerIndex] || ""}
               onChange={(e) => handleInputChange(answerIndex, e.target.value)}
@@ -161,11 +168,47 @@ export default function MathQuestionComponent({
           </div>
         );
       } else {
-        displayItems.push(
-          <div key={`number-${index}`} className={styles.numberDisplay}>
-            {num}
-          </div>
-        );
+        // Only show the number if it is >= 0 and <= maxNumber
+        if (typeof num === "number" && num >= 0 && num <= maxNumber) {
+          // Only show the first 0, hide all subsequent 0s
+          if (num === 0) {
+            if (
+              !displayItems.some((item) => {
+                const children = (item as React.ReactElement).props?.children;
+                return typeof children === "number" && children === 0;
+              })
+            ) {
+              displayItems.push(
+                <div key={`number-${index}`} className={styles.numberDisplay}>
+                  {num}
+                </div>
+              );
+            } else {
+              displayItems.push(
+                <div
+                  key={`number-${index}`}
+                  className={styles.numberDisplay}
+                  style={{ visibility: "hidden" }}
+                />
+              );
+            }
+          } else {
+            displayItems.push(
+              <div key={`number-${index}`} className={styles.numberDisplay}>
+                {num}
+              </div>
+            );
+          }
+        } else {
+          // If the number is negative or > maxNumber, render nothing (hide it)
+          displayItems.push(
+            <div
+              key={`number-${index}`}
+              className={styles.numberDisplay}
+              style={{ visibility: "hidden" }}
+            />
+          );
+        }
       }
 
       // Add arrow between numbers (except after the last one)

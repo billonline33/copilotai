@@ -23,6 +23,7 @@ export default function MathPracticePage() {
     pattern: 10,
     direction: "forward",
     startNumber: "0",
+    maxNumber: "200", // NEW: default max number is now 200
   });
 
   const [currentQuestion, setCurrentQuestion] = useState<MathQuestion | null>(
@@ -46,23 +47,35 @@ export default function MathPracticePage() {
     key: keyof MathPracticeSettings,
     value: string | number
   ) => {
-    // Clear any previous error when user makes changes
     setErrorMessage("");
-
-    // Validate start number
     if (key === "startNumber" && typeof value === "string") {
       const num = parseInt(value);
-      if (value !== "" && (isNaN(num) || num < 0 || num > 1000)) {
-        setErrorMessage("Please enter a number between 0 and 1000");
+      if (value !== "" && (isNaN(num) || num < 0)) {
+        setErrorMessage("Please enter a number greater than or equal to 0");
         return;
       }
     }
-
+    if (key === "maxNumber" && typeof value === "string") {
+      const num = parseInt(value);
+      if (value !== "" && (isNaN(num) || num < 1)) {
+        setErrorMessage("Please enter a max number greater than 0");
+        return;
+      }
+    }
     setSettings((prev) => ({
       ...prev,
       [key]: value,
     }));
   };
+
+  // Dynamically calculate max questions and sequence length based on maxNumber
+  const startNum = parseInt(settings.startNumber) || 0;
+  const maxNum = parseInt(settings.maxNumber) || 1000;
+  // Calculate how many steps we can take before exceeding maxNum
+  const maxSteps = Math.floor((maxNum - startNum) / (settings.pattern || 1));
+  // At least 1 question and 1 sequence
+  const dynamicTotalQuestions = Math.max(1, Math.min(24, maxSteps));
+  const dynamicSequenceLength = Math.max(1, Math.min(24, maxSteps));
 
   const generateAllQuestions = () => {
     try {
@@ -72,38 +85,34 @@ export default function MathPracticePage() {
         "sequence",
         "next-prev",
       ];
-
-      const startNum = parseInt(settings.startNumber) || 0;
-
-      // Validate that we can generate valid questions
-      if (startNum < 0 || startNum > 1000) {
-        setErrorMessage("Starting number must be between 0 and 1000");
-        return;
-      }
-
-      // Generate questions for the entire session
-      for (let i = 0; i < TOTAL_QUESTIONS_PER_SESSION; i++) {
+      // Use dynamic values
+      for (let i = 0; i < dynamicTotalQuestions; i++) {
         const randomType =
           questionTypes[Math.floor(Math.random() * questionTypes.length)];
-
-        // Vary the starting number slightly for each question
-        const questionStartNum = startNum + i * settings.pattern;
-
+        let questionStartNum = startNum + i * settings.pattern;
+        if (questionStartNum < 0) questionStartNum = 0;
+        if (questionStartNum > maxNum) questionStartNum = maxNum;
         const question = createMathQuestion({
           pattern: settings.pattern,
           direction: settings.direction,
           startNumber: questionStartNum,
           questionType: randomType,
-          sequenceLength: SEQUENCE_LENGTH_PER_QUESTION, // Consistent sequence length
+          sequenceLength: dynamicSequenceLength,
         });
-
+        question.sequence = question.sequence.map((n) => {
+          if (n == null || n < 0 || n > maxNum) return null;
+          return n;
+        });
+        question.correctAnswers = question.correctAnswers.map((n) => {
+          if (n == null || n < 0 || n > maxNum) return null;
+          return n;
+        });
         questions.push(question);
       }
-
       setAllQuestions(questions);
       setCurrentQuestionIndex(0);
       setCurrentQuestion(questions[0]);
-      setErrorMessage(""); // Clear any previous errors
+      setErrorMessage("");
     } catch (error) {
       console.error("Error generating questions:", error);
       setErrorMessage(
@@ -181,6 +190,12 @@ export default function MathPracticePage() {
   const handleCloseVideoReward = () => {
     console.log("🎬 handleCloseVideoReward called - closing video modal");
     setShowVideoReward(false);
+    // Automatically clear achievements so video can be triggered again
+    localStorage.removeItem("bianca-achievements");
+    setClearSessionAchievements(true);
+    setTimeout(() => {
+      setClearSessionAchievements(false);
+    }, 100);
   };
 
   // For testing - manually trigger video reward
@@ -208,6 +223,7 @@ export default function MathPracticePage() {
     }, 100);
   };
 
+  // Pass maxNumber to MathQuestionComponent as a prop
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -331,6 +347,7 @@ export default function MathPracticePage() {
               question={currentQuestion}
               onAnswerSubmit={handleAnswerSubmit}
               onNextQuestion={handleNextQuestion}
+              maxNumber={parseInt(settings.maxNumber) || 200}
             />
           )}
 
@@ -443,6 +460,31 @@ export default function MathPracticePage() {
               </div>
               <div className={styles.helpText}>
                 Try 0, 10, or 20 for easier practice! 🎯
+              </div>
+            </div>
+
+            <div className={styles.settingGroup}>
+              <label htmlFor="maxNumber">Largest number:</label>
+              <input
+                id="maxNumber"
+                type="number"
+                value={settings.maxNumber}
+                onChange={(e) =>
+                  handleSettingChange("maxNumber", e.target.value)
+                }
+                className={`${styles.numberInput} ${
+                  errorMessage ? styles.error : ""
+                }`}
+                placeholder="e.g., 1000"
+                min="1"
+                aria-describedby="max-help"
+                title="Enter the largest number allowed in practice"
+              />
+              <div id="max-help" className={styles.srOnly}>
+                Enter the largest number you want to practice up to
+              </div>
+              <div className={styles.helpText}>
+                The largest number that can appear in your practice session.
               </div>
             </div>
 

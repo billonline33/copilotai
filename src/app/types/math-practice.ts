@@ -9,10 +9,10 @@ export interface MathQuestion {
   pattern: number; // 2, 3, 5, 10
   direction: CountingDirection;
   startNumber: number;
-  sequence: number[];
+  sequence: (number | null)[]; // allow null for hidden values
   missingIndices: number[];
   userAnswers: (number | null)[];
-  correctAnswers: number[];
+  correctAnswers: (number | null)[]; // allow null for hidden values
 }
 
 export interface Progress {
@@ -47,6 +47,7 @@ export interface MathPracticeSettings {
   pattern: number;
   direction: CountingDirection;
   startNumber: string;
+  maxNumber: string; // NEW: user input for max number
 }
 
 // Validation types

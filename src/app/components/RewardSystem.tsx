@@ -42,17 +42,17 @@ const ACHIEVEMENTS: Achievement[] = [
   {
     id: "ten_correct",
     title: "Video Time! 🎬",
-    description: "10 correct answers! Enjoy your video reward!",
+    description: "20 correct answers! Enjoy your video reward!",
     icon: "🎬",
-    threshold: 10,
+    threshold: 20, // CHANGED from 10 to 20
     type: "correct",
   },
   {
     id: "twenty_correct",
     title: "Double Video Time! 🌟",
-    description: "20 correct answers! Another video for you!",
+    description: "40 correct answers! Another video for you!",
     icon: "�",
-    threshold: 20,
+    threshold: 40, // CHANGED from 20 to 40
     type: "correct",
   },
   {
