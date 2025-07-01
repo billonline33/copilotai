@@ -40,6 +40,7 @@ export default function MathQuestionComponent({
   );
   const [showBiancaCelebration, setShowBiancaCelebration] = useState(false);
   const firstInputRef = useRef<HTMLInputElement>(null);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
 
   // Reset state when question changes
   useEffect(() => {
@@ -117,9 +118,13 @@ export default function MathQuestionComponent({
       setShowBiancaCelebration(true);
       playCelebrationSound();
 
-      // Hide Bianca celebration after 4 seconds
+      // Hide Bianca celebration after 4 seconds and focus the next button
       setTimeout(() => {
         setShowBiancaCelebration(false);
+        // Focus the "Try Another Question!" button after celebration ends
+        setTimeout(() => {
+          nextButtonRef.current?.focus();
+        }, 100); // Small delay to ensure the button is visible
       }, 4000);
     }
   };
@@ -306,6 +311,7 @@ export default function MathQuestionComponent({
           )}
 
           <button
+            ref={nextButtonRef}
             onClick={handleNextQuestion}
             className={styles.nextButton}
             data-testid="next-question-button"
