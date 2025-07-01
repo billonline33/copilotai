@@ -15,6 +15,10 @@ import ProgressTracker from "../components/ProgressTracker";
 import VideoReward from "../components/VideoReward";
 
 export default function MathPracticePage() {
+  // Configuration constants
+  const TOTAL_QUESTIONS_PER_SESSION = 24;
+  const SEQUENCE_LENGTH_PER_QUESTION = TOTAL_QUESTIONS_PER_SESSION;
+
   const [settings, setSettings] = useState<MathPracticeSettings>({
     pattern: 10,
     direction: "forward",
@@ -31,7 +35,7 @@ export default function MathPracticePage() {
     questionsAnswered: 0,
     correctAnswers: 0,
     totalPoints: 0,
-    totalQuestions: 24, // Total questions in a session
+    totalQuestions: TOTAL_QUESTIONS_PER_SESSION, // Total questions in a session
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [showVideoReward, setShowVideoReward] = useState(false);
@@ -77,8 +81,8 @@ export default function MathPracticePage() {
         return;
       }
 
-      // Generate 24 questions
-      for (let i = 0; i < 24; i++) {
+      // Generate questions for the entire session
+      for (let i = 0; i < TOTAL_QUESTIONS_PER_SESSION; i++) {
         const randomType =
           questionTypes[Math.floor(Math.random() * questionTypes.length)];
 
@@ -90,6 +94,7 @@ export default function MathPracticePage() {
           direction: settings.direction,
           startNumber: questionStartNum,
           questionType: randomType,
+          sequenceLength: SEQUENCE_LENGTH_PER_QUESTION, // Consistent sequence length
         });
 
         questions.push(question);
@@ -118,7 +123,7 @@ export default function MathPracticePage() {
       questionsAnswered: 0,
       correctAnswers: 0,
       totalPoints: 0,
-      totalQuestions: 24,
+      totalQuestions: TOTAL_QUESTIONS_PER_SESSION,
     });
 
     // Clear session achievements for a fresh start
@@ -129,7 +134,7 @@ export default function MathPracticePage() {
       setClearSessionAchievements(false);
     }, 100);
 
-    // Generate all 24 questions at the start
+    // Generate all questions for the session at the start
     generateAllQuestions();
   };
 
@@ -160,7 +165,7 @@ export default function MathPracticePage() {
       setCurrentQuestion(allQuestions[nextIndex]);
     } else {
       // End of session - show completion message
-      console.log("Session completed! All 24 questions answered.");
+      console.log(`Session completed! All ${TOTAL_QUESTIONS_PER_SESSION} questions answered.`);
       setCurrentQuestion(null);
       // Could add a completion modal or redirect here
     }

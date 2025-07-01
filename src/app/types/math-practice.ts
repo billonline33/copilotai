@@ -30,6 +30,7 @@ export interface QuestionConfig {
   direction: CountingDirection;
   startNumber: number;
   questionType: QuestionType;
+  sequenceLength?: number; // Optional sequence length for the question
 }
 
 export interface Achievement {

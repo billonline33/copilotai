@@ -19,7 +19,7 @@ export function generateSequence(
   pattern: number,
   direction: CountingDirection,
   startNumber: number,
-  length: number = 12 // Increased default length for more numbers
+  length: number = 8 // Default reasonable length for a single question
 ): number[] {
   const sequence: number[] = [];
   let current = startNumber;
@@ -69,8 +69,9 @@ export function generateMissingIndices(
       break;
 
     case "sequence":
-      // 2-4 missing numbers, avoid first position
-      const numSequenceGaps = Math.floor(Math.random() * 3) + 2; // 2-4 gaps
+      // 4-6 missing numbers, never include first position (index 0)
+      const numSequenceGaps = Math.floor(Math.random() * 3) + 4; // 4-6 gaps
+      
       const sequenceAvailableIndices = Array.from(
         { length: sequenceLength - 2 }, // Exclude first and last positions
         (_, i) => i + 1 // Start from index 1
@@ -91,8 +92,8 @@ export function generateMissingIndices(
       break;
 
     case "next-prev":
-      // 2-4 missing numbers, avoid first position
-      const numPrevGaps = Math.floor(Math.random() * 3) + 2; // 2-4 gaps
+      // 4-6 missing numbers, avoid first position
+      const numPrevGaps = Math.floor(Math.random() * 3) + 4; // 4-6 gaps
       const prevAvailableIndices = Array.from(
         { length: sequenceLength - 1 }, // Exclude first position
         (_, i) => i + 1 // Start from index 1
@@ -118,10 +119,10 @@ export function generateMissingIndices(
  * @returns Complete MathQuestion object
  */
 export function createMathQuestion(config: QuestionConfig): MathQuestion {
-  const { pattern, direction, startNumber, questionType } = config;
+  const { pattern, direction, startNumber, questionType, sequenceLength = 8 } = config;
 
-  // Generate the complete sequence with more numbers
-  const fullSequence = generateSequence(pattern, direction, startNumber, 12);
+  // Generate the complete sequence with configurable length
+  const fullSequence = generateSequence(pattern, direction, startNumber, sequenceLength);
 
   // Determine which numbers will be missing
   const missingIndices = generateMissingIndices(

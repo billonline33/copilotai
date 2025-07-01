@@ -198,23 +198,25 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
             </div>
           </div>
 
-          <div className={styles.buttons}>
-            <button
+            <div className={styles.buttons}>
+            {process.env.NODE_ENV === "development" && (
+              <button
               className={styles.newVideoButton}
               onClick={() => {
                 const randomVideo =
-                  KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
+                KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
                 setSelectedVideo(randomVideo);
                 setWatchTime(0);
                 setVideoError(false); // Reset error state
               }}
-            >
+              >
               🎲 Random Video
-            </button>
+              </button>
+            )}
             <button className={styles.continueButton} onClick={handleClose}>
               Continue Practice
             </button>
-          </div>
+            </div>
         </div>
       </div>
     </div>
