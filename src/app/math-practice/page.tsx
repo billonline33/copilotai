@@ -17,7 +17,7 @@ import VideoReward from "../components/VideoReward";
 export default function MathPracticePage() {
   // Configuration constants
   const TOTAL_QUESTIONS_PER_SESSION = 24;
-  const SEQUENCE_LENGTH_PER_QUESTION = TOTAL_QUESTIONS_PER_SESSION;
+  const SEQUENCE_LENGTH_PER_QUESTION = 24; // Each question shows 8 numbers with 2-4 gaps
 
   const [settings, setSettings] = useState<MathPracticeSettings>({
     pattern: 10,
@@ -112,11 +112,6 @@ export default function MathPracticePage() {
     }
   };
 
-  const generateNewQuestion = () => {
-    // Legacy function - now just moves to next question
-    handleNextQuestion();
-  };
-
   const handleStartPractice = () => {
     setIsPlaying(true);
     setSessionStats({
@@ -165,7 +160,9 @@ export default function MathPracticePage() {
       setCurrentQuestion(allQuestions[nextIndex]);
     } else {
       // End of session - show completion message
-      console.log(`Session completed! All ${TOTAL_QUESTIONS_PER_SESSION} questions answered.`);
+      console.log(
+        `Session completed! All ${TOTAL_QUESTIONS_PER_SESSION} questions answered.`
+      );
       setCurrentQuestion(null);
       // Could add a completion modal or redirect here
     }

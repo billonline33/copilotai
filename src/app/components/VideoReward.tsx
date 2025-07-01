@@ -24,7 +24,7 @@ const KIDS_VIDEOS = [
   },
   {
     id: "if-youre-happy",
-    title: "If You're Happy and You Know It",
+    title: "If You&apos;re Happy and You Know It",
     embedId: "l4WNrvVjiTw", // Super Simple Songs - interactive song
     description: "Clap your hands and stomp your feet!",
   },
@@ -165,8 +165,8 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
                 <div className={styles.errorIcon}>📺</div>
                 <h3>Oops! Video not available</h3>
                 <p>
-                  Some videos can't be played in our app, but you've still
-                  earned your reward!
+                  Some videos can&apos;t be played in our app, but you&apos;ve
+                  still earned your reward!
                 </p>
                 <a
                   href={`https://www.youtube.com/watch?v=${selectedVideo.embedId}`}
@@ -198,25 +198,25 @@ export default function VideoReward({ isOpen, onClose }: VideoRewardProps) {
             </div>
           </div>
 
-            <div className={styles.buttons}>
+          <div className={styles.buttons}>
             {process.env.NODE_ENV === "development" && (
               <button
-              className={styles.newVideoButton}
-              onClick={() => {
-                const randomVideo =
-                KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
-                setSelectedVideo(randomVideo);
-                setWatchTime(0);
-                setVideoError(false); // Reset error state
-              }}
+                className={styles.newVideoButton}
+                onClick={() => {
+                  const randomVideo =
+                    KIDS_VIDEOS[Math.floor(Math.random() * KIDS_VIDEOS.length)];
+                  setSelectedVideo(randomVideo);
+                  setWatchTime(0);
+                  setVideoError(false); // Reset error state
+                }}
               >
-              🎲 Random Video
+                🎲 Random Video
               </button>
             )}
             <button className={styles.continueButton} onClick={handleClose}>
               Continue Practice
             </button>
-            </div>
+          </div>
         </div>
       </div>
     </div>
