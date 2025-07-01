@@ -17,7 +17,6 @@ import VideoReward from "../components/VideoReward";
 export default function MathPracticePage() {
   // Configuration constants
   const TOTAL_QUESTIONS_PER_SESSION = 24;
-  const SEQUENCE_LENGTH_PER_QUESTION = 24; // Each question shows 8 numbers with 2-4 gaps
 
   const [settings, setSettings] = useState<MathPracticeSettings>({
     pattern: 10,

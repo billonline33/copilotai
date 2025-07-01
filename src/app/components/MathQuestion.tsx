@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./MathQuestion.module.scss";
 import type { MathQuestion } from "../types/math-practice";
 import {
@@ -174,8 +174,14 @@ export default function MathQuestionComponent({
           if (num === 0) {
             if (
               !displayItems.some((item) => {
-                const children = (item as React.ReactElement).props?.children;
-                return typeof children === "number" && children === 0;
+                if (React.isValidElement(item)) {
+                  const element = item as React.ReactElement;
+                  const { children } = element.props as {
+                    children?: React.ReactNode;
+                  };
+                  return typeof children === "number" && children === 0;
+                }
+                return false;
               })
             ) {
               displayItems.push(

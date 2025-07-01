@@ -71,7 +71,7 @@ export function generateMissingIndices(
     case "sequence":
       // 4-6 missing numbers, never include first position (index 0)
       const numSequenceGaps = Math.floor(Math.random() * 3) + 4; // 4-6 gaps
-      
+
       const sequenceAvailableIndices = Array.from(
         { length: sequenceLength - 2 }, // Exclude first and last positions
         (_, i) => i + 1 // Start from index 1
@@ -119,10 +119,21 @@ export function generateMissingIndices(
  * @returns Complete MathQuestion object
  */
 export function createMathQuestion(config: QuestionConfig): MathQuestion {
-  const { pattern, direction, startNumber, questionType, sequenceLength = 8 } = config;
+  const {
+    pattern,
+    direction,
+    startNumber,
+    questionType,
+    sequenceLength = 8,
+  } = config;
 
   // Generate the complete sequence with configurable length
-  const fullSequence = generateSequence(pattern, direction, startNumber, sequenceLength);
+  const fullSequence = generateSequence(
+    pattern,
+    direction,
+    startNumber,
+    sequenceLength
+  );
 
   // Determine which numbers will be missing
   const missingIndices = generateMissingIndices(
@@ -159,7 +170,7 @@ export function createMathQuestion(config: QuestionConfig): MathQuestion {
  */
 export function validateAnswers(
   userAnswers: (number | null)[],
-  correctAnswers: number[]
+  correctAnswers: (number | null)[]
 ): {
   isCorrect: boolean;
   correctCount: number;
@@ -171,6 +182,12 @@ export function validateAnswers(
 
   userAnswers.forEach((userAnswer, index) => {
     const correctAnswer = correctAnswers[index];
+
+    if (correctAnswer === null) {
+      // This answer is not required (hidden or out of range)
+      feedback.push(`Question ${index + 1}: This answer is not required.`);
+      return;
+    }
 
     if (userAnswer === null) {
       feedback.push(`Question ${index + 1}: Please enter an answer`);
@@ -184,12 +201,14 @@ export function validateAnswers(
     }
   });
 
-  const isCorrect = correctCount === correctAnswers.length;
+  // Only count non-null correct answers for totalCount and isCorrect
+  const totalCount = correctAnswers.filter((a) => a !== null).length;
+  const isCorrect = correctCount === totalCount && totalCount > 0;
 
   return {
     isCorrect,
     correctCount,
-    totalCount: correctAnswers.length,
+    totalCount,
     feedback,
   };
 }
