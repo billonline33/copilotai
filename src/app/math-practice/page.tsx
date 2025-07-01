@@ -67,14 +67,38 @@ export default function MathPracticePage() {
     }));
   };
 
-  // Dynamically calculate max questions and sequence length based on maxNumber
+  // Dynamically calculate max questions and sequence length based on direction and range
   const startNum = parseInt(settings.startNumber) || 0;
   const maxNum = parseInt(settings.maxNumber) || 1000;
-  // Calculate how many steps we can take before exceeding maxNum
-  const maxSteps = Math.floor((maxNum - startNum) / (settings.pattern || 1));
+  
+  // Calculate how many steps we can take based on direction
+  let maxSteps;
+  if (settings.direction === "forward") {
+    // Forward: count up from startNum until we reach maxNum
+    maxSteps = Math.floor((maxNum - startNum) / (settings.pattern || 1));
+  } else {
+    // Backward: count down from startNum until we reach 0 (or reasonable minimum)
+    const minNum = 0; // Could be configurable in the future
+    maxSteps = Math.floor((startNum - minNum) / (settings.pattern || 1));
+  }
+  
+  // Ensure we have at least 1 step
+  maxSteps = Math.max(1, maxSteps);
   // At least 1 question and 1 sequence
+  // dynamicTotalQuestions: Determines how many questions will be generated for the session, based on the available range (from startNum to maxNum) and capped at 24.
+  // dynamicSequenceLength: Sets the length of the number sequence in each question, also based on the available range and capped at 24.
   const dynamicTotalQuestions = Math.max(1, Math.min(24, maxSteps));
   const dynamicSequenceLength = Math.max(1, Math.min(24, maxSteps));
+
+  console.log("-----002-------Creating math questions with settings:", {
+    startNum,
+    maxNum,
+    direction: settings.direction,
+    pattern: settings.pattern,
+    maxSteps,
+    dynamicTotalQuestions,
+    dynamicSequenceLength,
+  });
 
   const generateAllQuestions = () => {
     try {
