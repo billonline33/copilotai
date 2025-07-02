@@ -19,7 +19,7 @@ export default function MathPracticePage() {
   const TOTAL_QUESTIONS_PER_SESSION = 24;
 
   const [settings, setSettings] = useState<MathPracticeSettings>({
-    pattern: 10,
+    pattern: 1,
     direction: "forward",
     startNumber: "0",
     maxNumber: "200", // NEW: default max number is now 200
@@ -424,6 +424,7 @@ export default function MathPracticePage() {
                 className={styles.select}
                 aria-describedby="pattern-help"
               >
+                <option value={1}>1s (1, 2, 3, 4...)</option>
                 <option value={2}>2s (2, 4, 6, 8...)</option>
                 <option value={3}>3s (3, 6, 9, 12...)</option>
                 <option value={5}>5s (5, 10, 15, 20...)</option>
@@ -433,7 +434,7 @@ export default function MathPracticePage() {
                 Choose which counting pattern you want to practice
               </div>
               <div className={styles.helpText}>
-                Start with 10s - they&apos;re the easiest! 🌟
+                Start with 1s for the easiest practice, then try 10s! 🌟
               </div>
             </div>
 
