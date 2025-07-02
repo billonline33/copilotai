@@ -541,7 +541,7 @@ export default function MathPracticePage() {
           </section>
 
           {/* Progress Tracker on settings page */}
-          <ProgressTracker currentSession={sessionStats} />
+          {/* <ProgressTracker currentSession={sessionStats} /> */}
         </div>
       ) : null}
 
