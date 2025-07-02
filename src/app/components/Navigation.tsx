@@ -11,9 +11,9 @@ export default function Navigation() {
     <nav className={styles.nav}>
       <div className={styles.container}>
         <Link
-          href="/"
+          href="/todo"
           className={`${styles.navLink} ${
-            pathname === "/" ? styles.active : ""
+            pathname === "/todo" ? styles.active : ""
           }`}
         >
           <span className={styles.icon}>📝</span>
@@ -23,7 +23,7 @@ export default function Navigation() {
         <Link
           href="/math-practice"
           className={`${styles.navLink} ${
-            pathname === "/math-practice" ? styles.active : ""
+            pathname === "/math-practice" || pathname === "/" ? styles.active : ""
           }`}
         >
           <span className={styles.icon}>🔢</span>
