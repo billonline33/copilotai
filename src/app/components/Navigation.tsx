@@ -29,6 +29,16 @@ export default function Navigation() {
           <span className={styles.icon}>🔢</span>
           <span>Math Practice</span>
         </Link>
+
+        <Link
+          href="/ai"
+          className={`${styles.navLink} ${
+            pathname === "/ai" ? styles.active : ""
+          }`}
+        >
+          <span className={styles.icon}>🤖</span>
+          <span>AI</span>
+        </Link>
       </div>
     </nav>
   );
